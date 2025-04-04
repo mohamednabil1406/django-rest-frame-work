@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
 from .models import *
+from .serializers import *
 
 #all id get methods logic 
 class ProductsView(APIView):
@@ -38,3 +38,18 @@ class productsViewById(APIView):
                 "price": product.price
         }
         return Response(single_product)
+    
+    #patch logic code
+    def patch(self, request, id):
+        product = Products.objects.filter(id=id)
+        print(request.data)
+        product.update(product_name=request.data["product_name"],code=request.data["code"],price=request.data["price"])
+
+        return Response("data updated")
+    
+    #delete logic code
+    def delete(self, request, id):
+        product = Products.objects.get(id=id)
+        product.delete()
+        return Response("Data Deleted")
+        
